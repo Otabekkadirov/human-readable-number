@@ -110,12 +110,14 @@ function toReadable(number) {
 
         return `${bareThousand} ${hundredsText}`;
     }
-    if (number >= 1000 && number <= 999999) return thousandsToText(number);
+    if (number >= 1000 && number <= 10 ** 6 - 1) return thousandsToText(number);
 
     // create a function to convert numbers from 1,000,000 to 999,999,999 to text
     function millionsToText(num) {
+        const million = 10 ** 6;
+
         // get the first number in millions
-        let firstNum = Math.floor(num / 1000000);
+        let firstNum = Math.floor(num / million);
 
         // turn it into text with recursive function
         let firstNumText = toReadable(firstNum);
@@ -124,17 +126,55 @@ function toReadable(number) {
         let bareMillion = `${firstNumText} million`;
 
         // check if it's our result
-        if (num % 1000000 === 0) return bareMillion;
+        if (num % million === 0) return bareMillion;
 
         // get the rest of the numbers all together
-        let hundredsInMillion = num % 1000000;
+        let hundredsInMillion = num % million;
 
         // convert hundreds to text with recursive function
         let hundredsInMillionText = toReadable(hundredsInMillion);
 
         return `${bareMillion} ${hundredsInMillionText}`;
     }
-    if (number >= 1000000 && number <= 999999999) return millionsToText(number);
+    if (number >= 10 ** 6 && number <= 10 ** 9 - 1)
+        return millionsToText(number);
+
+    // create a function to convert billions to text
+    function billionsToText(num) {
+        const billion = 10 ** 9;
+
+        // get the first number in billions
+        let firstNum = Math.floor(num / billion);
+
+        // turn it into text with recursive function
+        let firstNumText = toReadable(firstNum);
+
+        // add 'billion' to it
+        let bareBillion = `${firstNumText} billion`;
+
+        // check if it's our result
+        if (num % billion === 0) return bareBillion;
+
+        // get the rest of the numbers all together
+        let millionsInBillions = num % billion;
+
+        // convert millions to text with recursive function
+        let millionsInBillionsText = toReadable(millionsInBillions);
+
+        return `${bareBillion} ${millionsInBillionsText}`;
+    }
+    if (number >= 10 ** 9 && number <= 10 ** 12 - 1)
+        return billionsToText(number);
+
+    if (number >= 10 ** 12)
+        return "I cannot count higher that billions yet, sorry.";
+}
+
+function convertToConsole(number) {
+    console.log("\n########################\n");
+    console.log(number + " is:\n");
+    console.log(toReadable(number));
+    console.log("\n########################\n");
 }
 
 // console.log(toReadable(0));
@@ -173,13 +213,28 @@ function toReadable(number) {
 // console.log(toReadable(431631));
 // console.log(toReadable(500000));
 // console.log(toReadable(999999));
-console.log(toReadable(1000000));
-console.log("1234567 is " + toReadable(1234567));
-console.log(toReadable(4141331));
-console.log(toReadable(9999990));
-console.log(toReadable(9996000));
-console.log(toReadable(113123331));
-console.log(toReadable(787787887));
-console.log(toReadable(777777777));
+// console.log(toReadable(1000000));
+// console.log("1234567 is " + toReadable(1234567));
+// console.log(toReadable(4141331));
+// console.log(toReadable(9999990));
+// console.log(toReadable(9996000));
+// console.log(toReadable(113123331));
+// console.log(toReadable(787787887));
+// console.log(toReadable(777777777));
+// console.log("\n########################\n");
+// console.log(912717326717 + " is:\n");
+// console.log(toReadable(912717326717));
+// console.log("\n########################\n");
+// console.log(10 ** 6);
+// console.log(10 ** 9);
+// console.log(10 ** 12);
+// convertToConsole(1);
+// convertToConsole(4);
+// convertToConsole(15);
+// convertToConsole(156);
+// convertToConsole(7215);
+// convertToConsole(10000);
+// convertToConsole(912717326717);
+convertToConsole(654321574878974561321);
 
 module.exports = toReadable;
