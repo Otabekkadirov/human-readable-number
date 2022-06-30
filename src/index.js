@@ -111,6 +111,30 @@ function toReadable(number) {
         return `${bareThousand} ${hundredsText}`;
     }
     if (number >= 1000 && number <= 999999) return thousandsToText(number);
+
+    // create a function to convert numbers from 1,000,000 to 999,999,999 to text
+    function millionsToText(num) {
+        // get the first number in millions
+        let firstNum = Math.floor(num / 1000000);
+
+        // turn it into text with recursive function
+        let firstNumText = toReadable(firstNum);
+
+        // add 'million' to it
+        let bareMillion = `${firstNumText} million`;
+
+        // check if it's our result
+        if (num % 1000000 === 0) return bareMillion;
+
+        // get the rest of the numbers all together
+        let hundredsInMillion = num % 1000000;
+
+        // convert hundreds to text with recursive function
+        let hundredsInMillionText = toReadable(hundredsInMillion);
+
+        return `${bareMillion} ${hundredsInMillionText}`;
+    }
+    if (number >= 1000000 && number <= 999999999) return millionsToText(number);
 }
 
 // console.log(toReadable(0));
@@ -149,5 +173,13 @@ function toReadable(number) {
 // console.log(toReadable(431631));
 // console.log(toReadable(500000));
 // console.log(toReadable(999999));
+console.log(toReadable(1000000));
+console.log("1234567 is " + toReadable(1234567));
+console.log(toReadable(4141331));
+console.log(toReadable(9999990));
+console.log(toReadable(9996000));
+console.log(toReadable(113123331));
+console.log(toReadable(787787887));
+console.log(toReadable(777777777));
 
 module.exports = toReadable;
